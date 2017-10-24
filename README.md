@@ -1,4 +1,4 @@
-# \<graphicalEditor\\\>
+# \<graphicalEditor/\>
 
 A picture editor on the web.
 
