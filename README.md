@@ -7,25 +7,21 @@ A picture editor on the web.
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to start the app.
 
 ## Viewing the Application
-
+This script will do everything for you.
 ```
-$ polymer serve
+$ npm run app
 ```
 
 ## Building the Application
 
 ```
-$ polymer build
+$ npm run build
 ```
 
-This will create builds of the application in the `build/` directory, optimized to be served in production. You can then serve the built versions directly:
-
-```
-$ polymer serve build/default
-```
+This will create builds of the application in the `build/` directory, optimized to be served in production and serve them.
 
 ## Running Tests
 
 ```
-$ polymer test
+$ npm run test
 ```
