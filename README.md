@@ -1,24 +1,24 @@
-# \<graphicalEditor\>
+# \<graphicalEditor\\\>
 
-Photoshop for on the web
+A picture editor on the web.
 
 ## Install the Polymer-CLI
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to start the app.
 
-## Viewing Your Application
+## Viewing the Application
 
 ```
 $ polymer serve
 ```
 
-## Building Your Application
+## Building the Application
 
 ```
 $ polymer build
 ```
 
-This will create builds of your application in the `build/` directory, optimized to be served in production. You can then serve the built versions by giving `polymer serve` a folder to serve from:
+This will create builds of the application in the `build/` directory, optimized to be served in production. You can then serve the built versions directly:
 
 ```
 $ polymer serve build/default
@@ -29,5 +29,3 @@ $ polymer serve build/default
 ```
 $ polymer test
 ```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
