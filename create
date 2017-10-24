@@ -1,0 +1,26 @@
+if [ ! -d "src/$1" ]; then
+  mkdir "src/$1";
+  echo "<link rel=\"import\" href=\"../../bower_components/polymer/polymer-element.html\">
+  <dom-module id=\"$1\">
+    <template>
+      <style>
+        :host {
+        }
+      </style>
+    </template>
+
+    <script>
+      class $2 extends Polymer.Element {
+        static get is() { return '$1'; }
+        static get properties() {
+          return {  };
+        }
+      }
+
+      window.customElements.define($2.is, $2);
+    </script>
+  </dom-module>" > "src/$1/$1.html";
+  echo "<link rel=\"import\" href=\"/src/$1/$1.html\">" >> "linker.html";
+else
+  echo "This directory already exists.";
+fi;

@@ -1,0 +1,38 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+  <dom-module id="tool-window">
+    <template>
+      <style>
+        :host {
+        }
+      </style>
+      <graphical-window name="TOOLS">
+        <toggle-list>
+          <icon-toggle src="img/pencil.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+          <icon-toggle src="img/settings.png"></icon-toggle>
+        </toggle-list>
+      </graphical-window>
+    </template>
+
+    <script>
+      class ToolWindow extends Polymer.Element {
+        static get is() { return 'tool-window'; }
+        static get properties() {
+          return {  };
+        }
+      }
+
+      window.customElements.define(ToolWindow.is, ToolWindow);
+    </script>
+  </dom-module>

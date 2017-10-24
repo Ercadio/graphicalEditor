@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<dom-module id="graphical-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        min-height: 100vh;
+        z-index: 0;
+        position: relative;
+        background-color: var(--gray-dark1);
+        --gray-light1: #22252B;
+        --highlight-color: #AAC8FF;
+        --gray-dark1: #141619;
+        --gray-dark2: #1E2126;
+      }
+    </style>
+    <graphical-canvas></graphical-canvas>
+    <tool-window></tool-window>
+  </template>
+
+  <script>
+    class GraphicalApp extends Polymer.Element {
+      ready(){
+        super.ready();
+      }
+      static get is() { return 'graphical-app'; }
+      static get properties() {
+        return {
+          mouseX:{
+            type: Number,
+            value: 0
+          },
+          mouseY:{
+            type: Number,
+            value: 0
+          }
+        };
+      }
+    }
+
+    window.customElements.define(GraphicalApp.is, GraphicalApp);
+  </script>
+</dom-module>

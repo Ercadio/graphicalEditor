@@ -1,0 +1,63 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+  <dom-module id="toggle-list">
+    <template>
+      <slot>
+      </slot>
+    </template>
+
+    <script>
+      class ToggleList extends Polymer.Element {
+        static get is() { return 'toggle-list'; }
+        static get properties() {
+          return {
+            selector:{
+              type: Object,
+              value: {}
+            },
+            list:{
+              type: Array,
+              value: []
+            }
+          };
+        }
+        ready(){
+          super.ready();
+          var listItems = this.getElementsByTagName("icon-toggle");
+          if(listItems[0]){
+            this.toggle(listItems[0]);
+          }
+          for(var i = 0; i <listItems.length; i++){
+            this.addToggler(listItems[i]);
+          }
+        }
+        addToggler(toggler){
+          this.push('list', toggler);
+          if(typeof toggler.appear === "function"){
+            toggler.appear();
+          }
+          toggler.addEventListener('click', function(e) {
+
+          });
+        }
+        removeToggler(toggler){
+          var index = this.list.indexOf(toggler);
+          if(typeof toggler.destroy === "function"){
+            toggler.destroy();
+          }
+          this.splice("list", index, 1);
+        }
+        toggle(toggler){
+          if(typeof toggler.toggle === "function"){
+            toggler.toggle();
+          }
+          var selector = this.get('selector');
+          if(typeof selector.toggle === "function"){
+            selector.toggle();
+          }
+          this.set('selector', toggler);
+        }
+      }
+
+      window.customElements.define(ToggleList.is, ToggleList);
+    </script>
+  </dom-module>

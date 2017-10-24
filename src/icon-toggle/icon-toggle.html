@@ -1,0 +1,84 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+  <dom-module id="icon-toggle">
+    <template>
+      <style>
+        :host{
+          display: block;
+          width: 3.5vmin;
+          box-sizing: border-box;
+          height: 3.5vmin;
+          background-image: url(../../[[src]]);
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          margin: 2.5%;
+          float: left;
+        }
+      </style>
+    </template>
+
+    <script>
+      class IconToggle extends Polymer.Element {
+        static get is() { return 'icon-toggle'; }
+        static get properties() {
+          return {
+            src:{
+              type: String,
+              value: ""
+            },
+            isToggled:{
+              type: Boolean,
+              value: false
+            }
+          };
+        }
+        ready(){
+          super.ready();
+          this.addEventListener('mouseover', function(e) {
+            if(!this.get('isToggled')){
+              var i = 0;
+              var animation = setInterval(()=>{
+                this.style['background-color'] = `hsla(216, 12%, 30%, ${i})`;
+                this.style['border'] = `1px solid hsla(216, 12%, 55%, ${i})`;
+                i += 0.1;
+                if(i >= 0.5){
+                  this.style['background-color'] = `hsla(216, 12%, 30%, 0.5)`;
+                  this.style['border'] = `1px solid hsla(216, 12%, 55%, 0.5)`;
+                  clearInterval(animation);
+                }
+              },1000/30);
+            }
+          });
+          this.addEventListener('mouseout', function(e) {
+            if(!this.get('isToggled')){
+              var i = 0.5;
+              var animation = setInterval(()=>{
+                this.style['background-color'] = `hsla(216, 12%, 30%, ${i})`;
+                this.style['border'] = `1px solid hsla(216, 12%, 55%, ${i})`;
+                i -= 0.1;
+                if(i <= 0){
+                  this.style['background-color'] = `hsla(216, 12%, 30%, 0)`;
+                  this.style['border'] = `1px solid hsla(216, 12%, 55%, 0)`;
+                  clearInterval(animation);
+                }
+              },1000/30);
+            }
+          });
+          this.addEventListener('click', function(e) {
+            this.toggle();
+          });
+          this.set('isToggled', false);
+          this.setAttribute('isToggled', false);
+        }
+        toggle(){
+          this.set('isToggled', !this.get('isToggled'));
+          console.log(`isToggled: ${this.isToggled}, ${this.get('isToggled')}, ${this.getAttribute('isToggled')}`);
+          if(this.getAttribute('isToggled')){
+            this.style['background-color'] = `hsla(216, 12%, 30%, 1)`;
+            this.style['border'] = `1px solid hsla(216, 12%, 55%, 1)`;
+          }
+        }
+      }
+
+      window.customElements.define(IconToggle.is, IconToggle);
+    </script>
+  </dom-module>

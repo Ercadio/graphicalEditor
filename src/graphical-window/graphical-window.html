@@ -1,0 +1,219 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+  <dom-module id="graphical-window">
+    <template>
+      <style>
+        :host {
+          display: {{display}};
+          width: {{width}}px;
+          height: {{height}}px;
+          background-color: var(--gray-dark2);
+          border-radius: 5px;
+          position: absolute;
+          top: {{posY}}px;
+          left: {{posX}}px;
+          z-index: {{zIndex}};
+          box-shadow: 0 0 3px black;
+          opacity: {{opacity}};
+        }
+        #movebox{
+          width: 100%;
+          height: 2.5vmin;
+          padding-top: 0.25vmin;
+          padding-bottom: 0.25vmin;
+          padding-left: 0.5vmin;
+          padding-right: 0.5vmin;
+          cursor: move;
+          font-family: 'Quicksand';
+          color: var(--highlight-color);
+          box-sizing: border-box;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+        #LPull{
+          height: calc(100% - 2.5vmin - 2.5px);
+          width: 5px;
+          margin-left: -2.5px;
+          float: left;
+          cursor: e-resize;
+        }
+        #RPull{
+          height: calc(100% - 2.5vmin - 2.5px);
+          width: 5px;
+          margin-right: -2.5px;
+          float: right;
+          cursor: w-resize;
+        }
+        #BPull{
+          height: 5px;
+          width: calc(100% - 5px);
+          margin-bottom: - 2.5px;
+          float: left;
+          cursor: s-resize;
+        }
+        #LBPull{
+          height: 5px;
+          width: 5px;
+          margin-bottom: -2.5px;
+          margin-left: -2.5px;
+          float: left;
+          cursor: sw-resize;
+        }
+        #RBPull{
+          height: 5px;
+          width: 5px;
+          margin-bottom: -2.5px;
+          margin-right: -2.5px;
+          float: right;
+          cursor: se-resize;
+        }
+        #content{
+          width: calc(100% - 5px);
+          height: calc(100% - 2.5vmin - 2.5px);
+          float: left;
+          padding: 2.5%;
+          box-sizing: border-box;
+        }
+      </style>
+      <div id="movebox" on-mousedown="moveWindow">
+        {{name}}
+        <x-button on-click="closeWindow"></x-button>
+        <min-button on-click="minimizeWindow"></min-button>
+      </div>
+      <div id="LPull"></div>
+      <div id="content">
+        <slot></slot>
+      </div>
+      <div id="RPull"></div>
+      <div id="LBPull"></div>
+      <div id="BPull"></div>
+      <div id="RBPull"></div>
+    </template>
+    <script>
+      class GraphicalWindow extends Polymer.Element {
+        static get is() { return 'graphical-window'; }
+        static get properties() {
+          return {
+            width:{
+              type: Number,
+              value: 300
+            },
+            height:{
+              type: Number,
+              value: 600
+            },
+            zIndex:{
+              type: Number,
+              value: 1
+            },
+            name:{
+              type: String,
+              value: "WINDOW"
+            },
+            opacity:{
+              type: Number,
+              value: 1
+            },
+            display:{
+              type: String,
+              value: "block"
+            },
+            maxWidth:{
+              type: Number,
+              value: 700
+            },
+            maxHeight:{
+              type: Number,
+              value: 1200
+            },
+            minWidth:{
+              type: Number,
+              value: 200
+            },
+            minHeight:{
+              type: Number,
+              value: 400
+            },
+            posX:{
+              type: Number,
+              value: 100
+            },
+            posY:{
+              type: Number,
+              value: 100
+            }
+          };
+        }
+        ready(){
+          super.ready();
+          this.addEventListener('prope-changed', function() {
+            console.log("ksjad");
+          });
+        }
+        closeWindow(){
+          var target = this;
+          var animation = setInterval(function(){
+            target.opacity -= 0.1;
+            if(target.opacity <= 0){
+              target.opacity = 0;
+              target.display = "none";
+              clearInterval(animation);
+            }
+          },1000/30);
+        }
+        openWindow(){
+          var target = this;
+          target.display = "block";
+          var animation = setInterval(function(){
+            target.opacity += 0.1;
+            if(target.opacity > 1){
+              target.opacity = 1;
+              clearInterval(animation);
+            }
+          },1000/30);
+        }
+        minimizeWindow(){
+
+        }
+        maximizeWindow(){
+
+        }
+        subscribeToMouse(){
+          this.dispatchEvent(new CustomEvent('mouseSubscribeEvent',{target: this}));
+        }
+        moveWindow(e){
+          var target = [e.clientX - this.offsetLeft, e.clientY - this.offsetTop];
+          var vel = [0,0];
+          var animation = setInterval(()=>{
+            vel[0] += 0.001 * (mouseX - this.posX - target[0]);
+            vel[1] += 0.001 * (mouseY - this.posY - target[1]);
+            this.posX += vel[0] + 0.5 * (mouseX - this.posX - target[0]);
+            this.posY += vel[1] + 0.5 * (mouseY - this.posY - target[1]);
+            if(this.posX <= 0){
+              this.posX = 0;
+              vel[0] = 0;
+            }
+            if(this.posY <= 0){
+              this.posY = 0;
+              vel[0] = 0;
+            }
+            if(this.posX + this.offsetWidth > window.innerWidth){
+              this.posX = window.innerWidth - this.offsetWidth;
+              vel[0] = 0;
+            }
+            if(this.posY + this.offsetHeight > window.innerHeight){
+              this.posY = window.innerHeight - this.offsetHeight;
+              vel[1] = 0;
+            }
+
+            if(!mouseIsPressed){
+              clearInterval(animation);
+            }
+          }, 1000/30);
+        }
+      }
+      window.customElements.define(GraphicalWindow.is, GraphicalWindow);
+    </script>
+  </dom-module>

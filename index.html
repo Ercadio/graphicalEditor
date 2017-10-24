@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <style>
+      @font-face {
+        font-family: 'Quicksand';
+        src:  url('Quicksand.woff2') format('woff2')
+      }
+      html,body{
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+    <script>
+      var mouseX = 0;
+      var mouseY = 0;
+      var mouseIsPressed = false;
+      function updateMousePosition(e){
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      }
+      function press(e){
+        mouseIsPressed = true;
+      }
+      function release(e){
+        mouseIsPressed = false;
+      }
+    </script>
+    <title>graphicalEditor</title>
+    <meta name="description" content="Photoshop on the web">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="linker.html">
+  </head>
+  <body onmousemove="updateMousePosition(event)" onmousedown="press(event)" onmouseup="release(event)">
+    <graphical-app></graphical-app>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+  <dom-module id="x-button">
+    <template>
+      <style>
+        :host {
+          float: right;
+          display: block;
+          width: 2vmin;
+          height: 2vmin;
+          background-image: url("/img/x-icon.png");
+          background-size: 100% 100%;
+          cursor: pointer;
+        }
+      </style>
+    </template>
+    <script>
+      class XButton extends Polymer.Element {
+        static get is() { return 'x-button'; }
+        static get properties() {
+          return {   };
+        }
+      }
+      window.customElements.define(XButton.is, XButton);
+    </script>
+  </dom-module>

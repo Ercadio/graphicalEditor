@@ -1,0 +1,7 @@
+{
+  "name": "graphicalEditor",
+  "short_name": "graphicalEditor",
+  "description": "Photoshop on the web",
+  "start_url": "/",
+  "display": "standalone"
+}
