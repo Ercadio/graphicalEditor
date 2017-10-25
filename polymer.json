@@ -1,4 +1,16 @@
 {
+  "entrypoint": "index.html",
+  "shell": "./src/graphical-app/graphical-app.html",
+  "fragments": [
+    "src/**/*"
+  ],
+  "sources":[
+    "img/*",
+    "src/**/*",
+    "bower.json",
+    "linker.html",
+    "Quicksand.woff2"
+  ],
   "lint": {
     "rules": [
       "polymer-2"

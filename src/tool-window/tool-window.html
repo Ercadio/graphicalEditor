@@ -6,8 +6,8 @@
         }
       </style>
       <graphical-window name="TOOLS">
-        <toggle-list>
-          <icon-toggle src="img/pencil.png"></icon-toggle>
+        <toggle-list selector="{{tool}}">
+          <icon-toggle src="img/pencil.png" is-toggled></icon-toggle>
           <icon-toggle src="img/settings.png"></icon-toggle>
           <icon-toggle src="img/settings.png"></icon-toggle>
           <icon-toggle src="img/settings.png"></icon-toggle>
@@ -22,6 +22,7 @@
           <icon-toggle src="img/settings.png"></icon-toggle>
           <icon-toggle src="img/settings.png"></icon-toggle>
         </toggle-list>
+
       </graphical-window>
     </template>
 
@@ -29,7 +30,17 @@
       class ToolWindow extends Polymer.Element {
         static get is() { return 'tool-window'; }
         static get properties() {
-          return {  };
+          return {
+            tool:{
+              type: Object,
+              value: {},
+              reflectToAttribute: true,
+              observer: "_toolChanged"
+            }
+          };
+        }
+        _toolChanged(oldValue, newValue){
+          console.log(newValue);
         }
       }
 

@@ -1,0 +1,24 @@
+{
+  "name": "graphicaleditor",
+  "version": "1.0.0",
+  "description": "A picture editor on the web.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "polymer test -o",
+    "app": "polymer serve -o",
+    "build": "polymer build && polymer serve ./build/default -o"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ercadio/graphicalEditor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ercadio/graphicalEditor/issues"
+  },
+  "homepage": "https://github.com/Ercadio/graphicalEditor#readme"
+}

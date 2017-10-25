@@ -1,6 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
   <dom-module id="toggle-list">
     <template>
+      <style>
+        :host{
+          width: auto;
+          height: auto;
+          box-sizing: border-box;
+          display: inline-block;
+          margin: auto auto;
+        }
+      </style>
       <slot>
       </slot>
     </template>
@@ -12,49 +21,28 @@
           return {
             selector:{
               type: Object,
-              value: {}
-            },
-            list:{
-              type: Array,
-              value: []
+              value: {},
+              reflectToAttribute: true
             }
           };
         }
         ready(){
           super.ready();
-          var listItems = this.getElementsByTagName("icon-toggle");
-          if(listItems[0]){
-            this.toggle(listItems[0]);
+          var list = this.getElementsByTagName("icon-toggle");
+          for(var i = 0; i < list.length; i++){
+            if(list[i].isToggled){
+              this.selector = list[i];
+            }
+            list[i].addEventListener('click', function(e) {
+              if(!this.isToggled){
+                this.isToggled = true;
+                this.parentElement.selector.isToggled = false;
+                this.parentElement.set("selector", this);
+                console.log(this.parentElement.selector);
+              }
+            });
           }
-          for(var i = 0; i <listItems.length; i++){
-            this.addToggler(listItems[i]);
-          }
-        }
-        addToggler(toggler){
-          this.push('list', toggler);
-          if(typeof toggler.appear === "function"){
-            toggler.appear();
-          }
-          toggler.addEventListener('click', function(e) {
-
-          });
-        }
-        removeToggler(toggler){
-          var index = this.list.indexOf(toggler);
-          if(typeof toggler.destroy === "function"){
-            toggler.destroy();
-          }
-          this.splice("list", index, 1);
-        }
-        toggle(toggler){
-          if(typeof toggler.toggle === "function"){
-            toggler.toggle();
-          }
-          var selector = this.get('selector');
-          if(typeof selector.toggle === "function"){
-            selector.toggle();
-          }
-          this.set('selector', toggler);
+          console.log(this.selector);
         }
       }
 

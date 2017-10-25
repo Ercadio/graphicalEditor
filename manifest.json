@@ -1,7 +1,7 @@
 {
   "name": "graphicalEditor",
   "short_name": "graphicalEditor",
-  "description": "Photoshop on the web",
+  "description": "A picture editor on the web.",
   "start_url": "/",
   "display": "standalone"
 }
