@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "polymer test -o",
-    "app": "polymer serve -o",
-    "build": "polymer build && polymer serve ./build/default -o"
+    "install": "install.sh",
+    "start": "polymer serve -o",
+    "test": "polymer test -o"
   },
   "repository": {
     "type": "git",

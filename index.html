@@ -17,16 +17,13 @@
     <script>
       var mouseX = 0;
       var mouseY = 0;
-      var mouseIsPressed = false;
+      var isPressed = false;
       function updateMousePosition(e){
         mouseX = e.clientX;
         mouseY = e.clientY;
       }
       function press(e){
-        mouseIsPressed = true;
-      }
-      function release(e){
-        mouseIsPressed = false;
+        isPressed = !isPressed;
       }
     </script>
     <title>graphicalEditor</title>
@@ -35,7 +32,7 @@
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
     <link rel="import" href="linker.html">
   </head>
-  <body onmousemove="updateMousePosition(event)" onmousedown="press(event)" onmouseup="release(event)">
+  <body onmousemove="updateMousePosition(event)" onmousedown="press(event)" onmouseup="press(event)" draggable="false">
     <graphical-app></graphical-app>
   </body>
 </html>

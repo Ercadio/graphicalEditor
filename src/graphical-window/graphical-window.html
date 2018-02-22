@@ -77,22 +77,25 @@
           box-sizing: border-box;
         }
       </style>
-      <div id="movebox" on-mousedown="moveWindow">
+      <div id="movebox" on-mousedown="moveWindow" draggable="false">
         {{name}}
         <x-button on-click="closeWindow"></x-button>
         <min-button on-click="minimizeWindow"></min-button>
       </div>
-      <div id="LPull"></div>
-      <div id="content">
+      <div id="LPull" on-mousedown="resize" draggable="false"></div>
+      <div id="content" draggable="false">
         <slot></slot>
       </div>
-      <div id="RPull"></div>
-      <div id="LBPull"></div>
-      <div id="BPull"></div>
-      <div id="RBPull"></div>
+      <div id="RPull" on-mousedown="resize" draggable="false"></div>
+      <div id="LBPull" on-mousedown="resize" draggable="false"></div>
+      <div id="BPull" on-mousedown="resize" draggable="false"></div>
+      <div id="RBPull" on-mousedown="resize" draggable="false"></div>
     </template>
     <script>
       class GraphicalWindow extends Polymer.Element {
+        static set animationLoop(target) {
+          this._rt = target;
+        }
         static get is() { return 'graphical-window'; }
         static get properties() {
           return {
@@ -148,45 +151,79 @@
         }
         ready(){
           super.ready();
-          this.addEventListener('prope-changed', function() {
-            console.log("ksjad");
+          const target = this;
+          window.addEventListener("mouseup",()=>{
+            target.destroyAnimation();
           });
         }
         closeWindow(){
           var target = this;
-          var animation = setInterval(function(){
+          setInterval(function(){
             target.opacity -= 0.1;
             if(target.opacity <= 0){
               target.opacity = 0;
               target.display = "none";
-              clearInterval(animation);
+              clearInterval(this);
             }
           },1000/30);
         }
         openWindow(){
           var target = this;
           target.display = "block";
-          var animation = setInterval(function(){
+          setInterval(function(){
             target.opacity += 0.1;
             if(target.opacity > 1){
               target.opacity = 1;
-              clearInterval(animation);
+              clearInterval(this);
             }
           },1000/30);
         }
         minimizeWindow(){
 
         }
+
+        resize(event){
+          event.target.style["background-color"] = "hsla(245, 89%, 61%, 0.6)";
+          this.resizeTimeout = {
+            "LPull": (target) => {
+              return new Promise(function(resolve, reject){
+                console.log(event);
+                setInterval(resolve, 250, target);
+              });
+            },
+            "RPull": (target) => {
+              return new Promise(function(resolve, reject){
+                setTimeout(resolve, 250, target);
+              });
+            },
+            "LBPull": (target) => {
+              return new Promise(function(resolve, reject){
+                setTimeout(resolve, 250, target);
+              });
+            },
+            "RBPull": (target) => {
+              return new Promise(function(resolve, reject){
+                setTimeout(resolve, 250, target);
+              });
+            },
+            "BPull": (target) => {
+              return new Promise(function(resolve, reject){
+                setTimeout(resolve, 250, target);
+              });
+            }
+          }[event.target.id](event.target)
+          .then((target)=>{
+            target.style["background-color"] = "transparent";
+          });
+        }
+
         maximizeWindow(){
 
-        }
-        subscribeToMouse(){
-          this.dispatchEvent(new CustomEvent('mouseSubscribeEvent',{target: this}));
         }
         moveWindow(e){
           var target = [e.clientX - this.offsetLeft, e.clientY - this.offsetTop];
           var vel = [0,0];
-          var animation = setInterval(()=>{
+          this.animationLoop = setInterval(()=>{
             vel[0] += 0.001 * (mouseX - this.posX - target[0]);
             vel[1] += 0.001 * (mouseY - this.posY - target[1]);
             this.posX += vel[0] + 0.5 * (mouseX - this.posX - target[0]);
@@ -207,11 +244,10 @@
               this.posY = window.innerHeight - this.offsetHeight;
               vel[1] = 0;
             }
-
-            if(!mouseIsPressed){
-              clearInterval(animation);
-            }
           }, 1000/30);
+        }
+        destroyAnimation(){
+          clearInterval(this.animationLoop);
         }
       }
       window.customElements.define(GraphicalWindow.is, GraphicalWindow);

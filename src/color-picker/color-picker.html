@@ -1,0 +1,73 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+  <dom-module id="color-picker">
+    <template>
+      <style>
+        :host {
+          background-color: black;
+          width: {{width}}px;
+          height: {{height}}px;
+          float:left;
+          border: 2px solid #555656;
+          /* box-sizing: border-box; */
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -o-user-select: none;
+user-select: none;
+        }
+      </style>
+      <canvas width="{{width}}" height="{{height}}" id="colorGraph" ></canvas>
+    </template>
+
+    <script>
+      class ColorPicker extends Polymer.Element {
+        static get is() { return 'color-picker'; }
+        static get properties() {
+          return {
+            width:{
+              type: Number,
+              value: 200
+            },
+            height:{
+              type: Number,
+              value: 150
+            }
+          };
+        }
+        generateColorField(hue = 0){
+          return new Uint8ClampedArray([...range(1, this.width*this.height*4, i => {
+            //        Ranges:
+            //        i         in (1, w * h * 4) INT
+            //        pixel     in (1, w * h)     INT
+            //        x         in (1, w)         INT
+            //        y         in (1, h)        INT
+            //        lightIndex  in (0,1)       float
+            //        hueIndex  in (0,1)       float
+            const pixel = Math.floor((i - 1) / 4) + 1;
+            const x = ((pixel - 1) % this.width) + 1;
+            const y = (Math.floor(pixel / (this.width + 1))) + 1;
+            const lightIndex = 1 - (y - 1) / (this.height - 1);
+            const hueIndex = 1 - (x - 1) / (this.width - 1);
+            const lightness = Math.floor(lightIndex * 255);
+            const vibrantness = Math.floor(hueIndex * 255);
+
+            return ([
+              () => 255,                                        // A
+              () => lightIndex * vibrantness,                   // R
+              () => lightIndex * vibrantness,                   // G
+              () => lightness                                   // B
+            ])[i % 4]();
+            })]);
+        }
+        ready(){
+          super.ready();
+          this._colorGraph = this.shadowRoot.getElementById("colorGraph").getContext("2d");
+          const colorField = this.generateColorField();
+          const imageData = new ImageData(colorField, this.width, this.height);
+          this._colorGraph.putImageData(imageData,0,0);
+        }
+      }
+
+      window.customElements.define(ColorPicker.is, ColorPicker);
+    </script>
+  </dom-module>

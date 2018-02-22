@@ -20,12 +20,18 @@
         height: 100%;
       }
     </style>
-    <canvas id="layer1"></canvas>
+    <canvas id="layer0" width="500" height="500" draggable="false"></canvas>
   </template>
 
   <script>
     class GraphicalCanvas extends Polymer.Element {
       static get is() { return 'graphical-canvas'; }
+      layer(id){
+        return this._layer[id];
+      }
+      static set lastKnownLocation(location){
+        this._lkl = location;
+      }
       static get properties() {
         return {
           width:{
@@ -38,8 +44,28 @@
           }
         };
       }
+      ready(){
+        super.ready();
+        const target = this;
+        const layer0 = this.shadowRoot.getElementById("layer0");
+        this._layer = [];
+        this._layer[0] = layer0.getContext("2d");
+        document.body.addEventListener("mousemove",function(e){
+          if(isPressed && this.lastKnownLocation != null){
+            const ctx = target.layer(0);
+            var hue = 0;
+            ctx.beginPath();
+            ctx.moveTo(...this.lastKnownLocation);
+            ctx.lineTo(e.x - target.offsetLeft, e.y - target.offsetTop);
+            ctx.strokeStyle = "hsl(100, 50%, 50%)";
+            ctx.lineWidth = 10;
+            ctx.lineCap = "round";
+            ctx.stroke();
+          }
+          target.lastKnownLocation = [e.x - this.offsetLeft, e.y - this.offsetTop];
+        });
+      }
     }
-
     window.customElements.define(GraphicalCanvas.is, GraphicalCanvas);
   </script>
 </dom-module>
